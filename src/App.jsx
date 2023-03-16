@@ -1,34 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import Timer from './timer';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [start, setStart] = useState(false);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [enable, setEnable] = useState(false);
+  const [reseter, setReseter] = useState(false);
+
+  function play(event) {
+    event.preventDefault();
+    setHours(parseInt(event.target.hours.value));
+    setMinutes(parseInt(event.target.minutes.value));
+    setSeconds(parseInt(event.target.seconds.value));
+    setEnable(true);
+    setStart(!start);
+    setReseter(false)
+  }
+  function reset(event) {
+    event.preventDefault();
+    document.getElementById('form').reset();
+    setEnable(false);
+    setStart(false);
+    setReseter(true)
+  }
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Timer
+        initHours={hours}
+        initMinutes={minutes}
+        initSeconds={seconds}
+        start={start}
+        reset={reseter}
+      ></Timer>
+      <div className="config">
+        <form action="" onSubmit={play} id="form" className="form">
+          <label htmlFor="">
+            Hours:
+            <input type="number" name="hours" disabled={enable} />
+          </label>
+          <label htmlFor="">
+            Minutes:
+            <input type="number" max="60" name="minutes" disabled={enable} />
+          </label>
+          <label htmlFor="">
+            Seconds:
+            <input type="number" max="60" name="seconds" disabled={enable} />
+          </label>
+          <button
+            type="submit"
+            className={start ? 'btn__pause' : 'btn__play'}
+          ></button>
+          <button type="button" onClick={reset}>
+            Reset
+          </button>
+        </form>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

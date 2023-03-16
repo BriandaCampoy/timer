@@ -1,0 +1,10 @@
+.overtime{
+  font-weight: 700;
+  color: red;
+}
+.btn__pause:after{
+  content: 'pause';
+}
+.btn__play:after{
+  content: 'play';
+}
